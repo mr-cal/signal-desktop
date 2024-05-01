@@ -5,6 +5,12 @@ on:
   push:
     branches: [ "candidate" ]
   workflow_dispatch:
+    inputs:
+      enable_ssh_access:
+        type: boolean
+        description: 'Enable ssh access'
+        required: false
+        default: false
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -35,6 +41,12 @@ jobs:
       matrix:
         architecture: ${{ fromJSON(needs.get-architectures.outputs.architectures-list) }}
     steps:
+      - name: Enable ssh access
+        uses: mxschmitt/action-tmate@v3
+        if: ${{ inputs.enable_ssh_access }}
+        with:
+          limit-access-to-actor: true
+
       - name: 🚢 Release to latest/candidate
         uses: snapcrafters/ci/release-to-candidate@main
         with:
