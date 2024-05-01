@@ -55,6 +55,4 @@ jobs:
           mkdir -p ~/.local/share/snapcraft
           echo -e "${{ secrets.LP_BUILD_SECRET }}" > ~/.local/share/snapcraft/launchpad-credentials
           sudo snap install snapcraft --classic
-          snapcraft init
-          git init
           snapcraft remote-build --launchpad-accept-public-upload --verbosity=trace --build-for arm64
