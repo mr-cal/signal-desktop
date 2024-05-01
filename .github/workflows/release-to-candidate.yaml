@@ -46,6 +46,10 @@ jobs:
         if: ${{ inputs.enable_ssh_access }}
         with:
           limit-access-to-actor: true
+      - name: Checkout the source
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
       - name: remote build
         run: |
           mkdir -p ~/.local/share/snapcraft
@@ -53,4 +57,4 @@ jobs:
           sudo snap install snapcraft --classic
           snapcraft init
           git init
-          CRAFT_DEBUG=1 snapcraft remote-build --launchpad-accept-public-upload --verbosity=trace --build-for arm64
+          snapcraft remote-build --launchpad-accept-public-upload --verbosity=trace --build-for arm64
