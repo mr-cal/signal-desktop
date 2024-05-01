@@ -41,11 +41,6 @@ jobs:
       matrix:
         architecture: ${{ fromJSON(needs.get-architectures.outputs.architectures-list) }}
     steps:
-      - name: Enable ssh access
-        uses: mxschmitt/action-tmate@v3
-        if: ${{ inputs.enable_ssh_access }}
-        with:
-          limit-access-to-actor: true
       - name: Checkout the source
         uses: actions/checkout@v4
         with:
@@ -56,3 +51,8 @@ jobs:
           echo -e "${{ secrets.LP_BUILD_SECRET }}" > ~/.local/share/snapcraft/launchpad-credentials
           sudo snap install snapcraft --classic
           snapcraft remote-build --launchpad-accept-public-upload --verbosity=trace --build-for arm64
+      - name: Enable ssh access
+        uses: mxschmitt/action-tmate@v3
+        if: ${{ inputs.enable_ssh_access }}
+        with:
+          limit-access-to-actor: true
