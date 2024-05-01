@@ -47,16 +47,11 @@ jobs:
         with:
           limit-access-to-actor: true
       - name: remote build
-        with:
-          launchpad-token: ${{ secrets.LP_BUILD_SECRET }}
         run: |
           mkdir -p ~/.local/share/snapcraft
-          echo -e "$launchpad-token" > ~/.local/share/snapcraft/launchpad-credentials
-
+          echo -e "${{ secrets.LP_BUILD_SECRET }}" > ~/.local/share/snapcraft/launchpad-credentials
           sudo snap install snapcraft --classic
           snapcraft init
           git init
-
           snapcraft init
           CRAFT_DEBUG=1 snapcraft remote-build --launchpad-accept-public-upload --verbosity=trace --build-for arm64
-  
